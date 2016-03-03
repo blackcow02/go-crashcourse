@@ -25,6 +25,7 @@
 				<section data-markdown>
 					## About Me
 					- Studied Mechatronics Engineering at UWA
+					- Worked in Mechanical and Process Controls Engineering
 					- Started working at The Frontier Group in 2015
 					- Have worked with python, ruby/rails, nodejs, C#
 				</section>
@@ -224,6 +225,26 @@
 						Go has a very opinionated structure. There are tools around this but it is a better idea to follow best practices.
 					</section>
 					<section data-markdown>
+						## GOPATH
+						The GOPATH is where everything is stored. The GOPATH has the following tree:
+						```bash
+						$GOPATH
+						├── bin
+							└── gocode
+							└── goimports
+							└── goreturns
+						├── pkg
+							└── darwin_amd64
+								└── github.com
+									└── nii236
+										└── repo-name
+						└── src
+							└── github.com
+								└── nii236
+									└── repo-name
+						```
+					</section>
+					<section data-markdown>
 						## Packages
 						These are basically libraries or modules in other languages and is namespaced. Exported identifiers in each package allows users to consume the packages as intended.
 
@@ -292,7 +313,10 @@
 						Structs are typed collections of fields.
 
 						Structs are also what enables Go's composition based object oriented programming.
-
+					</section>
+					<section data-markdown>
+						## Struct Example
+						Here is a struct declaration of a Person containing a Name of type string, and an Age of type int.
 						```go
 						type person struct {
 							Name string
