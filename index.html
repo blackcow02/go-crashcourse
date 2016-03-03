@@ -57,7 +57,6 @@
 						- Single, static binary
 						- Fast compile times
 						- Easily cross platform
-						- No inheritance
 						- Good community
 						- Langauge level concurrency (no callback hell)
 					</section>
@@ -331,7 +330,7 @@
 						## Struct Example
 						Here is a struct declaration of a Person containing a Name of type string, and an Age of type int.
 						```go
-						type person struct {
+						type Person struct {
 							Name string
 							Age  int
 						}
@@ -342,7 +341,7 @@
 						You refer to struct objects with their memory address when assigning to a variable
 						```go
 						func main() {
-							p := &person{"John", 29}
+							p := &Person{"John", 29}
 							fmt.Println(p.Name)
 						}
 						```
@@ -350,17 +349,17 @@
 					<section data-markdown>
 						## Embedding Structs
 						```go
-						type person struct {
+						type Person struct {
 							Name string
 							Age  int
 						}
 
-						type developer struct {
+						type Developer struct {
 							Person
 							Company	string
 						}
 
-						type student struct {
+						type Student struct {
 							Person
 							University string
 						}
@@ -426,7 +425,6 @@
 
 						type First struct { RandomInfo string}
 						type Second struct { OtherInfo int}
-
 						func (s *First) methodOne(a int) int {}
 						func (s *First) methodTwo(a int) int {}
 						func (s *Second) methodOne(a int) int {}
