@@ -17,27 +17,79 @@
 
 			<div class="slides">
 				<section data-markdown>
-					## Go Workshop
+					## Go Crash Course
 					A quick 1 hour workshop on the basics of Go
 
 					*John Nguyen*
+				</section>
+				<section data-markdown>
+					## About Me
+					- Studied Mechatronics Engineering at UWA
+					- Started working at The Frontier Group in 2015
+					- Have worked with python, ruby/rails, nodejs, C#
+				</section>
+				<section>
+					<section data-markdown>
+						## About Go
+						[Go](https://golang.org/) is an open source programming language that makes it easy to build simple, reliable, and efficient software.
+					</section>
+					<section data-markdown>
+						## Notable Companies Using Go
+						- Google / Facebook / Yahoo
+						- Rackspace / Digital Ocean / Heroku
+						- Shopify / Booking.com / Medium
+						- IBM / Comcast / Canonical
+						- Square
+						- SendGrid / Bitly
+						- Docker
+						- Dropbox
+					</section>
+					<section data-markdown>
+						## Why Go?
+						- Simple
+						- Maintainable
+						- Opinionated project structure
+						- Opinionated formatting rules
+						- Robust tooling
+						- Scales easily
+						- Single, static binary
+						- Fast compile times
+						- Easily cross platform
+						- No inheritance
+						- Good community
+						- Langauge level concurrency (no callback hell)
+					</section>
+					<section data-markdown>
+						## Why not Go?
+						- No generics
+						- No operator overloading
+						- Inelegant
+						- Ugly syntax
+						- Poor dependency management
+						- Garbage collector can not be modified easily
+						- Verbose error handling
+					</section>
 				</section>
 
 				<section>
 					<section data-markdown>
 						## Installation
 						## OSX
-						```
+						```bash
 						brew update
 						brew install go
 						```
-						### Linux and Windows
+						### Linux
 						Download binary from https://golang.org/dl/
+						```bash
+						wget https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz
+						sudo tar -C /usr/local -xzf go1.6.linux-amd64.tar.gz
+						```
 					</section>
 					<section data-markdown>
 						## Paths
 						Add the following to your `.profile`. This will add the binaries to your PATH and also setup your GOPATH environment
-						```
+						```bash
 						export PATH=$PATH:/usr/local/go/bin
 						export GOPATH=$HOME/work
 						```
@@ -70,22 +122,22 @@
 					</section>
 					<section data-markdown>
 						## Using Go
-						The commands `go get`, `go build`, `go run`, and `go test` will probably be the most commonly used commands.
+						The commands `go get`, `go build`, `go run`, and `go test` will probably be your most commonly used commands.
 
 						## Cross compilation
 						To cross compile to a different system architecture, prefix with the environment variable.
 
 						Cross compiling for Windows from OSX:
-						```
+						```plain
 						GOOS=windows GOARCH=amd64 go build main.go
 						```
 					</section>
 					<section data-markdown>
 						## Editors
-						- Atom + go-plus
-						- Sublime Text + gosublime
+						- [Atom](https://atom.io/) + [go-plus](https://github.com/joefitzgerald/go-plus)
+						- [Sublime Text](https://www.sublimetext.com/) + [gosublime](https://github.com/DisposaBoy/GoSublime)
 						- IntelliJ IDEA Community + [go-lang-idea-plugin](https://github.com/go-lang-plugin-org/go-lang-idea-plugin)
-						- Vim + vim-go
+						- Vim + [vim-go](https://github.com/fatih/vim-go)
 						- VSCode + vscode-go
 					</section>
 				</section>
@@ -137,7 +189,6 @@
 						}
 						```
 					</section>
-
 
 					<section data-markdown>
 						# Loops
@@ -233,7 +284,77 @@
 						- Text and HTML Templates
 					</section>
 				</section>
+				<section>
+					<section data-markdown>
+						## Structs
+						These are a very important part of Go and are worth focusing on.
 
+						Structs are typed collections of fields.
+
+						Structs are also what enables Go's composition based object oriented programming.
+
+						```go
+						type person struct {
+							Name string
+							Age  int
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Instantiating Structs
+						You refer to struct objects with their memory address when assigning to a variable
+						```go
+						func main() {
+							p := &person{"John", 29}
+							fmt.Println(p.Name)
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Embedding Structs
+						```go
+						type person struct {
+							Name string
+							Age  int
+						}
+
+						type developer struct {
+							Person
+							Company	string
+						}
+
+						type student struct {
+							Person
+							University string
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Attaching Methods
+						```go
+						func (p *Person) sayHello() {
+							fmt.Println("Hello")
+						}
+
+						func (d *Developer) sayHello() {
+							fmt.Println("BeepBoop")
+						}
+
+						func main() {
+							p := &Person{"Andy", 32}
+							d := &Developer{Person{"John", 29}, "TFG"}
+							p.sayHello()
+							d.sayHello()
+						}
+						```
+
+						```bash
+						$ go run main.go
+						Hello
+						BeepBoop
+						```
+					</section>
+				</section>
 				<section>
 					<section data-markdown>
 						## Procedures
@@ -241,6 +362,7 @@
 					</section>
 					<section data-markdown>
 						## Functions
+						Go supports first class functions that do not need to be attached or instantiated from a class/object
 						```go
 						func exampleFunction(varName string) []int, error {
 							...
@@ -249,6 +371,7 @@
 					</section>
 					<section data-markdown>
 						## Methods
+						Go also allows you to attach methods to structs
 						```go
 						func (s *SomeStruct) exampleMethod(a int) int {
 							...
@@ -257,10 +380,23 @@
 					</section>
 					<section data-markdown>
 						## Interfaces
+						Collections of methods are called interfaces, and these are satisfied **implicitly**. So if you attach the right methods to a struct to satisfy an interface you may use that struct as an argument wherever that interface is used!
 						```go
 						type ExampleInterface interface {
 							methodOne(in string) string
 							methodTwo(in []int) int, error
+						}
+
+						type First struct { RandomInfo string}
+						type Second struct { OtherInfo int}
+
+						func (s *First) methodOne(a int) int {}
+						func (s *First) methodTwo(a int) int {}
+						func (s *Second) methodOne(a int) int {}
+						func (s *Second) methodTwo(a int) int {}
+
+						func satisfied (ex ExampleInterface) {
+							// Either first or second struct can be used!
 						}
 						```
 					</section>
