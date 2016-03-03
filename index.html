@@ -49,6 +49,7 @@
 						## Why Go?
 						- Simple
 						- Maintainable
+						- Easily generated documentation
 						- Opinionated project structure
 						- Opinionated formatting rules
 						- Robust tooling
@@ -105,7 +106,7 @@
 					<section data-markdown>
 						## Go tool
 						The `go` tool can handle fetching dependencies, running tests, installing binaries, running programs, linting, code formatting, and many other things!
-						```js
+						```bash
 						build       compile packages and dependencies
 						clean       remove object files
 						env         print Go environment information
@@ -119,6 +120,18 @@
 						tool        run specified go tool
 						version     print Go version
 						vet         run go tool vet on packages
+						```
+					</section>
+					<section data-markdown>
+						## Third Party Tools
+						The third party tooling is very good considering how young Go is. Many of the tools are built in Go, and write to stdout so can be easily parsed and plugged into any editors easily.
+
+						A short list of essential third party tools are:
+						```bash
+						glide        Dependency Management
+						gocode       Allows package inspection for autocompletion
+						golint       Linting for go source code
+						godef        Go to definition
 						```
 					</section>
 					<section data-markdown>
