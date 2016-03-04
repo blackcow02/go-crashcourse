@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - Barebones</title>
+		<title>Go Crash Course</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css" id="theme">
@@ -75,17 +75,20 @@
 				<section>
 					<section data-markdown>
 						## Installation
-						## OSX
+						### OSX
 						```bash
 						brew update
 						brew install go
 						```
 						### Linux
-						Download binary from https://golang.org/dl/
+						Download binary from [https://golang.org/dl/]()
 						```bash
 						wget https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz
 						sudo tar -C /usr/local -xzf go1.6.linux-amd64.tar.gz
 						```
+
+						### Web
+						Visit [https://play.golang.org/]().
 					</section>
 					<section data-markdown>
 						## Paths
@@ -647,11 +650,11 @@
 						}
 						```
 						This is a high-performance, DoS-hardened and production-ready web server.
-						It serves [dl.google.com](http://dl.google.com) currently uses it.
+						It serves [dl.google.com](http://dl.google.com).
 					</section>
 					<section data-markdown>
 						## Server with Templated HTML
-						We will need our first dependency for this code.
+						We will need to fetch our first dependency for this code.
 						```bash
 						go get github.com/gorilla/mux
 						```
@@ -668,10 +671,15 @@
 							log.Fatal(http.ListenAndServe(":8081", rt))
 						}
 						```
+
+						The route handler Index will be handled next.
 					</section>
 
 					<section data-markdown>
 						## Route Handlers
+
+						`Index` will be executed when the route `/` is hit.
+
 						```go
 						//Index is the handler for root path
 						func Index(w http.ResponseWriter, r *http.Request) {
@@ -693,6 +701,10 @@
 					</section>
 					<section data-markdown>
 						## Templating
+
+						HTML templating is a powerful feature of Go and lets you render data-driven HTML.
+
+						As of Go 1.6, blocks are introduced which let you build templates on other templates.
 
 						```go
 						func htmlTemplate(pd PageData) (string, error) {
