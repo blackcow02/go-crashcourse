@@ -122,6 +122,28 @@
 						```
 					</section>
 					<section data-markdown>
+						## Documentation
+						The Go project cares a lot about documentation, and `golint` enforces clean code that can be parsed for generation of documentation.
+
+						The `godoc` tool can parse code to render documentation to stdout.
+						```bash
+						$ godoc fmt Formatter
+						use 'godoc cmd/fmt' for documentation on the fmt command
+
+						type Formatter interface {
+							Format(f State, c rune)
+						}
+						Formatter is the interface implemented by values with a custom
+						formatter. The implementation of Format may call Sprint(f) or Fprint(f)
+						etc. to generate its output.
+						```
+						The `godoc` tool also contains a webserver!
+						```bash
+						$ godoc -http=":8082"
+						$ open http://localhost:8082
+						```
+					</section>
+					<section data-markdown>
 						## Third Party Tools
 						The third party tooling is very good considering how young Go is. Many of the tools are built in Go, and write to stdout so can be easily parsed and plugged into any editors easily.
 
@@ -152,6 +174,74 @@
 						- [IntelliJ IDEA Community](https://www.jetbrains.com/idea/download/) + [go-lang-idea-plugin](https://github.com/go-lang-plugin-org/go-lang-idea-plugin)
 						- [Vim](http://www.vim.org/) + [vim-go](https://github.com/fatih/vim-go)
 						- [VSCode](https://code.visualstudio.com/) + [vscode-go](https://github.com/Microsoft/vscode-go)
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						## Program Structure
+						Go has a very opinionated structure. There are tools around this but it is a better idea to follow best practices.
+					</section>
+					<section data-markdown>
+						## GOPATH
+						The GOPATH is where everything is stored. The GOPATH has the following tree:
+						```bash
+						$GOPATH
+						├── bin
+							└── gocode
+							└── goimports
+							└── goreturns
+						├── pkg
+							└── darwin_amd64
+								└── github.com
+									└── nii236
+										└── repo-name
+						└── src
+							└── github.com
+								└── nii236
+									└── repo-name
+						```
+					</section>
+					<section data-markdown>
+						## Packages
+						These are basically libraries or modules in other languages and is namespaced. Exported identifiers in each package allows users to consume the packages as intended.
+
+						Packages are fetched with `go get` and are imported with a fully qualified name and will fetch the HEAD everytime.
+
+						```go
+						import "github.com/exampleUser/exampleRepo"
+						```
+					</section>
+					<section data-markdown>
+						## Vendoring
+						Since Go 1.5, there has been support for vendoring and dependency management (which allows us to control which versions of packages we fetch).
+
+						There have been many third party tools created for this, as the creators of Go do not see it as necessary (as they live in Google's monorepo environment):
+						- [gb](https://getgb.io/)
+						- [godep](https://github.com/tools/godep)
+						- [glide](https://github.com/Masterminds/glide)
+					</section>
+					<section data-markdown>
+						## Exported and Unexported Identifiers
+						If the first letter of a function is a capital, then it is considered an exported identifier and can be accessed from outside the package.
+						```go
+						// ExportedFunction is a function that is accessible outside of the package
+						func ExportedFunction() {}
+						```
+
+						If the first letter is lowercase instead, it will be considered private.
+						```go
+						func unexportedFunction() {}
+						```
+					</section>
+					<section data-markdown>
+						## Variables
+						There are a few ways of declaring variables.
+						```go
+						var a, b, c int
+						var i, j, k = true, 2.3, "four"
+						f, err := os.Open(name)
+						```
+
 					</section>
 				</section>
 				<section>
@@ -229,67 +319,6 @@
 							fmt.Println(v)
 						}
 						```
-					</section>
-				</section>
-				<section>
-					<section data-markdown>
-						## Program Structure
-						Go has a very opinionated structure. There are tools around this but it is a better idea to follow best practices.
-					</section>
-					<section data-markdown>
-						## GOPATH
-						The GOPATH is where everything is stored. The GOPATH has the following tree:
-						```bash
-						$GOPATH
-						├── bin
-							└── gocode
-							└── goimports
-							└── goreturns
-						├── pkg
-							└── darwin_amd64
-								└── github.com
-									└── nii236
-										└── repo-name
-						└── src
-							└── github.com
-								└── nii236
-									└── repo-name
-						```
-					</section>
-					<section data-markdown>
-						## Packages
-						These are basically libraries or modules in other languages and is namespaced. Exported identifiers in each package allows users to consume the packages as intended.
-
-						Packages are fetched with `go get` and are imported with a fully qualified name and will fetch the HEAD everytime.
-
-						```go
-						import "github.com/exampleUser/exampleRepo"
-						```
-					</section>
-					<section data-markdown>
-						## Vendoring
-						Since Go 1.5, there has been support for vendoring and dependency management (which allows us to control which versions of packages we fetch).
-
-						There have been many third party tools created for this, as the creators of Go do not see it as necessary (as they live in Google's monorepo environment):
-						- gb
-						- godep
-						- glide
-					</section>
-					<section data-markdown>
-						## Exported and Unexported Identifiers
-						If the first letter of a function is a capital, then it is considered an exported identifier and can be accessed from outside the package.
-
-						If the first letter is lowercase instead, it will be considered private.
-					</section>
-					<section data-markdown>
-						## Variables
-						There are a few ways of declaring variables.
-						```go
-						var a, b, c int
-						var i, j, k = true, 2.3, "four"
-						f, err := os.Open(name)
-						```
-
 					</section>
 				</section>
 
@@ -400,9 +429,22 @@
 					<section data-markdown>
 						## Functions
 						Go supports first class functions that do not need to be attached or instantiated from a class/object
+
+						Functions in Go can have *multiple return values*
 						```go
-						func exampleFunction(varName string) []int, error {
+						func exampleFunction(varName string) ([]int, error) {
 							...
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Anonymous Functions
+						Go supports anonymous functions
+						```go
+						func parentFunc(varName string) func {
+							return func childFunc() {
+
+							}()
 						}
 						```
 					</section>

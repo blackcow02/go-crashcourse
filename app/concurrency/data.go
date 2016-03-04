@@ -1,6 +1,6 @@
 package concurrency
 
-// Data is a list of websites
+// Data is a list of websites fetched to show an example concurrency.
 var Data = []string{
 	"http://book.com",
 	"http://youtube.com",

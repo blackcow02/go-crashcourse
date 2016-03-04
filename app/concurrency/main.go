@@ -1,25 +1,14 @@
+// Package concurrency shows examples of concurrency usage in Go.
 package concurrency
 
 import (
-	"flag"
 	"fmt"
 	"net/http"
 	"sync"
 	"time"
 )
 
-func main() {
-	flag.Parse()
-
-	sites := flag.Args()
-	start := time.Now()
-
-	WithWG(sites)
-	// WithoutWG(sites)
-	fmt.Printf("Entire process took %s\n", time.Since(start))
-}
-
-// WithWG runs the fetcher with wait groups
+// WithWG runs the fetcher with wait groups.
 func WithWG(sites []string) {
 	var wg sync.WaitGroup
 	start := time.Now()
@@ -41,7 +30,7 @@ func WithWG(sites []string) {
 	fmt.Printf("Entire process took %s\n", time.Since(start))
 }
 
-// WithoutWG runs the fetcher without wait groups or concurrency
+// WithoutWG runs the fetcher without wait groups or concurrency.
 func WithoutWG(sites []string) {
 	start := time.Now()
 	for _, site := range sites {

@@ -1,46 +1,48 @@
+// Package structs shows how Go handles struct embedding,
+// passing in interfaces and also attaching methods to objects.
 package structs
 
 import "fmt"
 
-// PersonProvider is an interface which requires the SayHello func
+// PersonProvider is an interface which requires the SayHello func.
 type PersonProvider interface {
 	SayHello()
 }
 
-// Person is a struct example of a person
+// Person is a struct example of a person.
 type Person struct {
 	Name string
 	Age  int
 }
 
-// Developer is a struct with an embedded person
+// Developer is a struct with an embedded person.
 type Developer struct {
 	Person
 	Company string
 }
 
-// Student is a struct with an embedded person
+// Student is a struct with an embedded person.
 type Student struct {
 	Person
 	University string
 }
 
-// SayHello is how a person says hello
+// SayHello is how a person says hello.
 func (p Person) SayHello() {
 	fmt.Println(p.Name, ": Hello")
 }
 
-// SayHello is how a developer says hello
+// SayHello is how a developer says hello.
 func (d Developer) SayHello() {
 	fmt.Println(d.Name, ": BeepBoop")
 }
 
-// SayHello is how a student says hello
+// SayHello is how a student says hello.
 func (s Student) SayHello() {
 	fmt.Println(s.Name, ": I need money")
 }
 
-// StructExample shows how structs can be embedded
+// StructExample shows how structs can be embedded.
 func StructExample() {
 	p := &Person{"Andy", 32}
 	d := &Developer{Person{"John", 29}, "TFG"}
@@ -50,7 +52,7 @@ func StructExample() {
 	s.SayHello()
 }
 
-// InterfaceExample shows how you can use interfaces as args and stubbing
+// InterfaceExample shows how you can use interfaces as args and stubbing.
 func InterfaceExample(pp PersonProvider) {
 	pp.SayHello()
 }

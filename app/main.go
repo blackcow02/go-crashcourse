@@ -1,3 +1,4 @@
+// This package is used for the Go Crashcourse
 package main
 
 import (

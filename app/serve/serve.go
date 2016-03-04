@@ -1,3 +1,5 @@
+// Package serve contains two implementations of a simple HTTP web server.
+// The first just says hello world, and the second uses HTML templating.
 package serve
 
 import (
@@ -11,13 +13,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//PageData contains the body and title of the webpage
+//PageData contains the body and title of the webpage.
 type PageData struct {
 	Title string
 	Body  string
 }
 
-// PartOne runs a web server without any templating
+// PartOne runs a web server without any templating.
 func PartOne() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello 世界 from %q", html.EscapeString(r.URL.Path))
@@ -27,7 +29,7 @@ func PartOne() {
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
 
-// PartTwo runs a web server with templating
+// PartTwo runs a web server with templating.
 func PartTwo() {
 	rt := mux.NewRouter().StrictSlash(true)
 	rt.HandleFunc("/", Index)
@@ -35,7 +37,7 @@ func PartTwo() {
 	log.Fatal(http.ListenAndServe(":8081", rt))
 }
 
-//Index is the handler for root path
+//Index is the handler for root path.
 func Index(w http.ResponseWriter, r *http.Request) {
 	pd := PageData{
 		Title: "Index Page",

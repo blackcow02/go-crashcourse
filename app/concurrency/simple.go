@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// Routines is an example of Go routines
+// Routines is an example of Go routines.
 func Routines() {
 	go say("let's go!", 3*time.Second)
 	go say("ho!", 2*time.Second)
@@ -20,7 +20,7 @@ func say(text string, delay time.Duration) {
 	fmt.Println(text)
 }
 
-// Channels is an example of Go channels
+// Channels is an example of Go channels.
 func Channels() {
 	messages := make(chan string)
 	go func() { messages <- "ping" }()
