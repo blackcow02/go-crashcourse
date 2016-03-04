@@ -55,6 +55,6 @@ func main() {
 }
 
 //SayHello is an external method to OldGuy
-func (s *OldGuy) SayHello() {
+func (s OldGuy) SayHello() {
 	fmt.Println("Hello from outside the package! I'm good for stubbing!")
 }

@@ -28,17 +28,17 @@ type Student struct {
 }
 
 // SayHello is how a person says hello.
-func (p Person) SayHello() {
+func (p *Person) SayHello() {
 	fmt.Println(p.Name, ": Hello")
 }
 
 // SayHello is how a developer says hello.
-func (d Developer) SayHello() {
+func (d *Developer) SayHello() {
 	fmt.Println(d.Name, ": BeepBoop")
 }
 
 // SayHello is how a student says hello.
-func (s Student) SayHello() {
+func (s *Student) SayHello() {
 	fmt.Println(s.Name, ": I need money")
 }
 
