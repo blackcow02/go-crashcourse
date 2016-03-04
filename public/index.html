@@ -440,14 +440,23 @@
 					</section>
 					<section data-markdown>
 						## Anonymous Functions
-						Go supports anonymous functions
-						```go
-						func parentFunc(varName string) func {
-							return func childFunc() {
+						Go supports anonymous functions.
 
-							}()
+						They can also be used as a return value given the same function signature.
+						```go
+						// AnonymousFunc is an anonymous function type
+						// that can be used as a return value.
+						type AnonymousFunc func() []int
+
+						// Parentfunc simply returns AnonymousFunc.
+						func Parentfunc() AnonymousFunc {
+							return func() []int {
+								return []int{1, 2}
+							}
 						}
 						```
+
+						This can be useful for creating wrappers around functions such as building middleware for HTTP handlers.
 					</section>
 					<section data-markdown>
 						## Methods

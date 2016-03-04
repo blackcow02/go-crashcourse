@@ -1,10 +1,10 @@
 package procedures
 
-// AnonyFunc is an anonymous function type that can be used as a return value.
-type AnonyFunc func() []int
+// AnonymousFunc is an anonymous function type that can be used as a return value.
+type AnonymousFunc func() []int
 
-// Parentfunc simply returns AnonyFunc.
-func Parentfunc() AnonyFunc {
+// Parentfunc simply returns AnonymousFunc.
+func Parentfunc() AnonymousFunc {
 	return func() []int {
 		return []int{1, 2}
 	}
