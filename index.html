@@ -95,7 +95,7 @@
 						Add the following to your `.profile`. This will add the binaries to your PATH and also setup your GOPATH environment
 						```bash
 						export PATH=$PATH:/usr/local/go/bin
-						export GOPATH=$HOME/work
+						export GOPATH=$HOME/go
 						```
 					</section>
 				</section>
@@ -182,7 +182,7 @@
 				<section>
 					<section data-markdown>
 						## Program Structure
-						Go has a very opinionated structure. There are tools around this but it is a better idea to follow best practices.
+						Go has a very opinionated structure. There are tools to get around this but it is a better idea to follow best practices.
 					</section>
 					<section data-markdown>
 						## GOPATH
@@ -248,21 +248,49 @@
 
 					</section>
 				</section>
+
+				<section>
+					<section data-markdown>
+						## Types
+						Go's type system is very simplistic and not easily extensible.
+					</section>
+					<section data-markdown>
+						## Data Types
+						- Integers
+						- Floats
+						- Complex Numbers
+						- Booleans
+						- Strings
+						- Constants
+					</section>
+					<section data-markdown>
+						## Composite Types
+						- Arrays
+						- Slices
+						- Maps
+						- Struct
+						- JSON
+						- Text and HTML Templates
+					</section>
+				</section>
+
 				<section>
 					<section data-markdown>
 						## Program Flow
 						[Link](https://play.golang.org/p/iozXXYlnZ6)
 
-						Methods to control the program flow is similar to C based languages
+						Methods to control the program flow are similar to C based languages.
 					</section>
 					<section data-markdown>
 						## Conditionals
-						Methods to control the program flow is similar to C based languages
+						The `if` statement behaves as expected.
 						```go
 						if condition {
 							// Do something
 						}
-
+						```
+						You can also assign temporary variables.
+						```go
 						if a := something; condition {
 							// Assign a variable or run a function then do something
 						}
@@ -290,18 +318,18 @@
 						fmt.Print("write ", i, " as ")
 						switch i {
 							case 1:
-							fmt.Println("one")
+								fmt.Println("one")
 							case 2:
-							fmt.Println("two")
+								fmt.Println("two")
 							case 3:
-							fmt.Println("three")
+								fmt.Println("three")
 						}
 						```
 					</section>
 
 					<section data-markdown>
 						## Loops
-						There is only a single type of loop
+						There is only a single reserved word for loops.
 						```go
 						for initialization; condition; post {
 							// Vanilla loop
@@ -318,7 +346,7 @@
 					</section>
 					<section data-markdown>
 						## Range
-						Iterable objects can also be `range`d over:
+						Iterable objects can also be `range`d over.
 						```go
 						a := [1, 2, 3]
 						for _, v := range a {
@@ -330,32 +358,8 @@
 
 				<section>
 					<section data-markdown>
-						## Types
-						Go's type system is very simplistic and not easily extensible.
-					</section>
-					<section data-markdown>
-						## Data Types
-						- Integers
-						- Floats
-						- Complex Numbers
-						- Booleans
-						- Strings
-						- Constants
-					</section>
-					<section data-markdown>
-						## Composite Types
-						- Arrays
-						- Slices
-						- Maps
-						- Struct
-						- JSON
-						- Text and HTML Templates
-					</section>
-				</section>
-				<section>
-					<section data-markdown>
 						## Structs
-						[Link](https://play.golang.org/p/OS7G3Zl2A7)
+						[Link](https://play.golang.org/p/YlrlQIwEO2)
 
 						These are a very important part of Go and are worth focusing on.
 
@@ -405,28 +409,32 @@
 					</section>
 					<section data-markdown>
 						## Attaching Methods
-						Use struct pointers if you need to mutate the object itself.
+						Use struct pointers only if you need to mutate the object.
 						```go
 						func (p Person) sayHello() {
-							fmt.Println("Hello")
+							fmt.Println("Hello, I am", p.Name)
 						}
 
 						func (d Developer) sayHello() {
-							fmt.Println("BeepBoop")
+							fmt.Println("BeepBoop I am", d.Name)
 						}
 
+						func (d *Developer) changeName(in string) {
+							d.Name = in
+						}
+						```
+					</section>
+					<section data-markdown>
+						Run the program.
+						```go
 						func main() {
 							p := &Person{"Andy", 32}
 							d := &Developer{Person{"John", 29}, "TFG"}
-							p.sayHello()
-							d.sayHello()
+							p.sayHello()            // Prints "Hello, I am Andy"
+							d.sayHello()            // Prints "BeepBoop I am John"
+							d.changeName("Johnny")
+							d.sayHello()            // Prints "BeepBoop I am Johnny"
 						}
-						```
-
-						```bash
-						$ go run main.go
-						Hello
-						BeepBoop
 						```
 					</section>
 				</section>
@@ -472,7 +480,11 @@
 						## Methods
 						Go also allows you to attach methods to structs
 						```go
-						func (s *SomeStruct) exampleMethod(a int) int {
+						func (s *SomeStruct) mutableMethod(a int) int {
+							...
+						}
+
+						func (s SomeStruct) immutableMethod(a int) int {
 							...
 						}
 						```
@@ -546,19 +558,19 @@
 						## Command Line Tool Example
 						```go
 						func main() {
-						    var cmd string
+								var cmd string
 
-						    flag.StringVar(&cmd, "cmd", cmd, `cmd can be either "hello" or "bye"`)
-						    flag.Parse()
+								flag.StringVar(&cmd, "cmd", cmd, `cmd can be either "hello" or "bye"`)
+								flag.Parse()
 
-						    switch cmd {
-						    case "hello":
-						        fmt.Println("Hello!")
-						    case "bye":
-						        fmt.Println("Bye!")
-						    default:
-						        flag.Usage()
-						    }
+								switch cmd {
+								case "hello":
+										fmt.Println("Hello!")
+								case "bye":
+										fmt.Println("Bye!")
+								default:
+										flag.Usage()
+								}
 						}
 						```
 					</section>
@@ -569,8 +581,8 @@
 						$ go build main.go
 						$ ./go-crashcourse
 						Usage of ./go-crashcourse:
-						  -cmd string
-						    	cmd can be either "hello" or "bye"
+							-cmd string
+									cmd can be either "hello" or "bye"
 						```
 					</section>
 				</section>
@@ -637,14 +649,14 @@
 						The net/http package provides an HTTP client.
 						```
 						func main() {
-						    r, err := http.Get("http://www.golang.org/")
-						    if err != nil {
-						        log.Fatal(err)
-						    }
-						    if r.StatusCode != http.StatusOK {
-						        log.Fatal(r.Status)
-						    }
-						    io.Copy(os.Stdout, r.Body)
+								r, err := http.Get("http://www.golang.org/")
+								if err != nil {
+										log.Fatal(err)
+								}
+								if r.StatusCode != http.StatusOK {
+										log.Fatal(r.Status)
+								}
+								io.Copy(os.Stdout, r.Body)
 						}
 						```
 					</section>
@@ -654,15 +666,15 @@
 						The net/http package also provides an HTTP server.
 						```
 						func main() {
-						    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-						        fmt.Fprint(w, "Hello, web")
-						    })
+								http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+										fmt.Fprint(w, "Hello, web")
+								})
 
-						    fmt.Println("Starting server")
-						    err := http.ListenAndServe("localhost:8080", nil)
-						    if err != nil {
-						        log.Fatal(err)
-						    }
+								fmt.Println("Starting server")
+								err := http.ListenAndServe("localhost:8080", nil)
+								if err != nil {
+										log.Fatal(err)
+								}
 						}
 						```
 						This is a high-performance, DoS-hardened and production-ready web server.
