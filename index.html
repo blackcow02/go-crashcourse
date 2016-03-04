@@ -49,16 +49,16 @@
 						## Why Go?
 						- Simple
 						- Maintainable
-						- Easily generated documentation
-						- Opinionated project structure
-						- Opinionated formatting rules
-						- Robust tooling
 						- Scales easily
+						- Easily generated documentation
+						- Fast
+						- Robust tooling
 						- Single, static binary
 						- Fast compile times
-						- Easily cross platform
+						- Cross platform
 						- Good community
 						- Language level concurrency (no callback hell)
+						- Useful error messages
 					</section>
 					<section data-markdown>
 						## Why not Go?
@@ -137,8 +137,8 @@
 							Format(f State, c rune)
 						}
 						Formatter is the interface implemented by values with a custom
-						formatter. The implementation of Format may call Sprint(f) or Fprint(f)
-						etc. to generate its output.
+						formatter. The implementation of Format may call
+						Sprint(f) or Fprint(f) etc. to generate its output.
 						```
 						The `godoc` tool also contains a webserver!
 						```bash
@@ -251,6 +251,8 @@
 				<section>
 					<section data-markdown>
 						## Program Flow
+						[Link](https://play.golang.org/p/iozXXYlnZ6)
+
 						Methods to control the program flow is similar to C based languages
 					</section>
 					<section data-markdown>
@@ -353,6 +355,8 @@
 				<section>
 					<section data-markdown>
 						## Structs
+						[Link](https://play.golang.org/p/OS7G3Zl2A7)
+
 						These are a very important part of Go and are worth focusing on.
 
 						Structs are typed collections of fields.
@@ -401,12 +405,13 @@
 					</section>
 					<section data-markdown>
 						## Attaching Methods
+						Use struct pointers if you need to mutate the object itself.
 						```go
-						func (p *Person) sayHello() {
+						func (p Person) sayHello() {
 							fmt.Println("Hello")
 						}
 
-						func (d *Developer) sayHello() {
+						func (d Developer) sayHello() {
 							fmt.Println("BeepBoop")
 						}
 
@@ -443,6 +448,8 @@
 					</section>
 					<section data-markdown>
 						## Anonymous Functions
+						[Link](https://play.golang.org/p/0tOpD0O1p8)
+
 						Go supports anonymous functions.
 
 						They can also be used as a return value given the same function signature.
@@ -472,6 +479,8 @@
 					</section>
 					<section data-markdown>
 						## Interfaces
+						[Link](https://play.golang.org/p/F6ZCguKs55)
+
 						Interfaces in Go provide a way to specify the behavior of an object: if something can do *this*, then it can be used here.
 
 						Interfaces are satisfied **implicitly**.
@@ -479,16 +488,16 @@
 						```go
 						type ExampleInterface interface {
 							methodOne(in string) string
-							methodTwo(in []int) int, error
+							methodTwo(in []int) (int, error)
 						}
 						type First struct { RandomInfo string}
 						type Second struct { OtherInfo int}
 
-						func (s *First) methodOne(a int) int {}
-						func (s *First) methodTwo(a int) int {}
+						func (s *First) methodOne(a int) string {}
+						func (s *First) methodTwo(a int) (int, error)
 
-						func (s *Second) methodOne(a int) int {}
-						func (s *Second) methodTwo(a int) int {}
+						func (s *Second) methodOne(a int) string {}
+						func (s *Second) methodTwo(a int) (int, error) {}
 
 						func satisfied (ex ExampleInterface) {
 							// Either first or second struct can be used!
@@ -501,9 +510,12 @@
 					<section data-markdown>
 						## Hello World
 						We're going to start with a simple hello world program.
+
 					</section>
 					<section data-markdown>
-						## Hello World
+						## Hello World Example
+						[Link](https://play.golang.org/p/I3l_5RKJts)
+
 						The below code will get you going:
 						```go
 						package main
@@ -576,6 +588,9 @@
 					</section>
 					<section data-markdown>
 						## Go routine example
+
+						[Link](https://play.golang.org/p/W51Ls4Tlsu)
+
 						```
 						// Routines is an example of Go routines.
 						func Routines() {
@@ -599,6 +614,7 @@
 					</section>
 					<section data-markdown>
 						## Go channel example
+						[Link](https://play.golang.org/p/a8ka_5zoEG)
 						```go
 						// Channels is an example of Go channels.
 						func Channels() {
@@ -778,7 +794,7 @@
 						```
 					</section>
 					<section data-markdown>
-						Next we will write the test itself:
+						Next we will write the test itself.
 
 						```go
 						func TestFunc(t *testing.T) {
@@ -796,8 +812,7 @@
 
 					</section>
 					<section data-markdown>
-						## Testing Example Continued
-						Next we will write the code that satisfies the test:
+						Now we will write the code that satisfies the test.
 
 						```go
 						package add
@@ -809,8 +824,7 @@
 						```
 					</section>
 					<section data-markdown>
-						## Testing Example Continued
-						Now we can run the test and see how we go!
+						And finally we can run the test and see how we go!
 						```bash
 						$ go test ./...
 						?   	github.com/nii236/gotraining/go-crashcourse	[no test files]
