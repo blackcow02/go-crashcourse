@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - Barebones</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				<section data-markdown>
+					## Go Crash Course
+					A quick 1 hour workshop on the basics of Go
+
+					*John Nguyen*
+				</section>
+				<section data-markdown>
+					## About Me
+					- Studied Mechatronics Engineering at UWA
+					- Worked in Mechanical and Process Controls Engineering
+					- Started working at The Frontier Group in 2015
+					- Have worked with python, ruby/rails, nodejs, C#
+				</section>
+				<section>
+					<section data-markdown>
+						## About Go
+						[Go](https://golang.org/) is an open source programming language that makes it easy to build simple, reliable, and efficient software.
+					</section>
+					<section data-markdown>
+						## Notable Companies Using Go
+						- Google / Facebook / Yahoo
+						- Rackspace / Digital Ocean / Heroku
+						- Shopify / Booking.com / Medium
+						- IBM / Comcast / Canonical
+						- Square
+						- SendGrid / Bitly
+						- Docker
+						- Dropbox
+					</section>
+					<section data-markdown>
+						## Why Go?
+						- Simple
+						- Maintainable
+						- Easily generated documentation
+						- Opinionated project structure
+						- Opinionated formatting rules
+						- Robust tooling
+						- Scales easily
+						- Single, static binary
+						- Fast compile times
+						- Easily cross platform
+						- Good community
+						- Language level concurrency (no callback hell)
+					</section>
+					<section data-markdown>
+						## Why not Go?
+						- No generics
+						- No operator overloading
+						- Inelegant
+						- Ugly syntax
+						- Poor dependency management
+						- Garbage collector can not be modified easily
+						- Verbose error handling
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Installation
+						## OSX
+						```bash
+						brew update
+						brew install go
+						```
+						### Linux
+						Download binary from https://golang.org/dl/
+						```bash
+						wget https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz
+						sudo tar -C /usr/local -xzf go1.6.linux-amd64.tar.gz
+						```
+					</section>
+					<section data-markdown>
+						## Paths
+						Add the following to your `.profile`. This will add the binaries to your PATH and also setup your GOPATH environment
+						```bash
+						export PATH=$PATH:/usr/local/go/bin
+						export GOPATH=$HOME/work
+						```
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Tooling
+						Go comes with its own tool, called `go`. It manages many things, and any missing functionality can be covered with third party tools.
+					</section>
+					<section data-markdown>
+						## Go tool
+						The `go` tool can handle fetching dependencies, running tests, installing binaries, running programs, linting, code formatting, and many others!
+						```bash
+						build       compile packages and dependencies
+						clean       remove object files
+						env         print Go environment information
+						fix         run go tool fix on packages
+						fmt         run gofmt on package sources
+						get         download and install packages and dependencies
+						install     compile and install packages and dependencies
+						list        list packages
+						run         compile and run Go program
+						test        test packages
+						tool        run specified go tool
+						version     print Go version
+						vet         run go tool vet on packages
+						```
+					</section>
+					<section data-markdown>
+						## Third Party Tools
+						The third party tooling is very good considering how young Go is. Many of the tools are built in Go, and write to stdout so can be easily parsed and plugged into any editors easily.
+
+						A short list of essential third party tools are:
+						```bash
+						glide        Dependency Management
+						gocode       Allows package inspection for autocompletion
+						golint       Linting for go source code
+						godef        Go to definition
+						```
+					</section>
+					<section data-markdown>
+						## Using Go
+						The commands `go get`, `go build`, `go run`, and `go test` will probably be your most commonly used commands.
+
+						## Cross compilation
+						To cross compile to a different system architecture, prefix with the relevant environment variables.
+
+						Cross compiling for Windows from OSX:
+						```bash
+						GOOS=windows GOARCH=amd64 go build main.go
+						```
+					</section>
+					<section data-markdown>
+						## Editors
+						- [Atom](https://atom.io/) + [go-plus](https://github.com/joefitzgerald/go-plus)
+						- [Sublime Text](https://www.sublimetext.com/) + [gosublime](https://github.com/DisposaBoy/GoSublime)
+						- [IntelliJ IDEA Community](https://www.jetbrains.com/idea/download/) + [go-lang-idea-plugin](https://github.com/go-lang-plugin-org/go-lang-idea-plugin)
+						- [Vim](http://www.vim.org/) + [vim-go](https://github.com/fatih/vim-go)
+						- [VSCode](https://code.visualstudio.com/) + [vscode-go](https://github.com/Microsoft/vscode-go)
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						## Program Flow
+						Methods to control the program flow is similar to C based languages
+					</section>
+					<section data-markdown>
+						## Conditionals
+						Methods to control the program flow is similar to C based languages
+						```go
+						if condition {
+							// Do something
+						}
+
+						if a := something; condition {
+							// Assign a variable or run a function then do something
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Select
+						The select statement lets a goroutine wait on multiple communication operations.
+						```go
+						for i := 0; i < 2; i++ {
+							select {
+								case msg1 := <- c1:
+									fmt.Println("received", msg1)
+								case msg2 := <- c2:
+									fmt.Println("received", msg2)
+							}
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Switch
+						These statements express conditionals across many branches.
+						```go
+						i := 2
+						fmt.Print("write ", i, " as ")
+						switch i {
+							case 1:
+							fmt.Println("one")
+							case 2:
+							fmt.Println("two")
+							case 3:
+							fmt.Println("three")
+						}
+						```
+					</section>
+
+					<section data-markdown>
+						## Loops
+						There is only a single type of loop
+						```go
+						for initialization; condition; post {
+							// Vanilla loop
+						}
+
+						for condition {
+							// While loop
+						}
+
+						for {
+							// Infinite loop
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Range
+						Iterable objects can also be `range`d over:
+						```go
+						a := [1, 2, 3]
+						for _, v := range a {
+							fmt.Println(v)
+						}
+						```
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						## Program Structure
+						Go has a very opinionated structure. There are tools around this but it is a better idea to follow best practices.
+					</section>
+					<section data-markdown>
+						## GOPATH
+						The GOPATH is where everything is stored. The GOPATH has the following tree:
+						```bash
+						$GOPATH
+						├── bin
+							└── gocode
+							└── goimports
+							└── goreturns
+						├── pkg
+							└── darwin_amd64
+								└── github.com
+									└── nii236
+										└── repo-name
+						└── src
+							└── github.com
+								└── nii236
+									└── repo-name
+						```
+					</section>
+					<section data-markdown>
+						## Packages
+						These are basically libraries or modules in other languages and is namespaced. Exported identifiers in each package allows users to consume the packages as intended.
+
+						Packages are fetched with `go get` and are imported with a fully qualified name and will fetch the HEAD everytime.
+
+						```go
+						import "github.com/exampleUser/exampleRepo"
+						```
+					</section>
+					<section data-markdown>
+						## Vendoring
+						Since Go 1.5, there has been support for vendoring and dependency management (which allows us to control which versions of packages we fetch).
+
+						There have been many third party tools created for this, as the creators of Go do not see it as necessary (as they live in Google's monorepo environment):
+						- gb
+						- godep
+						- glide
+					</section>
+					<section data-markdown>
+						## Exported and Unexported Identifiers
+						If the first letter of a function is a capital, then it is considered an exported identifier and can be accessed from outside the package.
+
+						If the first letter is lowercase instead, it will be considered private.
+					</section>
+					<section data-markdown>
+						## Variables
+						There are a few ways of declaring variables.
+						```go
+						var a, b, c int
+						var i, j, k = true, 2.3, "four"
+						f, err := os.Open(name)
+						```
+
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Types
+						Go's type system is very simplistic and not easily extensible.
+					</section>
+					<section data-markdown>
+						## Data Types
+						- Integers
+						- Floats
+						- Complex Numbers
+						- Booleans
+						- Strings
+						- Constants
+					</section>
+					<section data-markdown>
+						## Composite Types
+						- Arrays
+						- Slices
+						- Maps
+						- Struct
+						- JSON
+						- Text and HTML Templates
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						## Structs
+						These are a very important part of Go and are worth focusing on.
+
+						Structs are typed collections of fields.
+
+						Structs are also what enables Go's composition based object oriented programming.
+					</section>
+					<section data-markdown>
+						## Struct Example
+						Here is a struct declaration of a Person containing a Name of type string, and an Age of type int.
+						```go
+						type Person struct {
+							Name string
+							Age  int
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Instantiating Structs
+						You refer to struct objects with their memory address when assigning to a variable
+						```go
+						func main() {
+							p := &Person{"John", 29}
+							fmt.Println(p.Name)
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Embedding Structs
+						Go does not provide the typical, type-driven notion of subclassing, but it does have the ability to “borrow” pieces of an implementation by embedding types within a struct or interface.
+						```go
+						type Person struct {
+							Name string
+							Age  int
+						}
+
+						type Developer struct {
+							Person
+							Company	string
+						}
+
+						type Student struct {
+							Person
+							University string
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Attaching Methods
+						```go
+						func (p *Person) sayHello() {
+							fmt.Println("Hello")
+						}
+
+						func (d *Developer) sayHello() {
+							fmt.Println("BeepBoop")
+						}
+
+						func main() {
+							p := &Person{"Andy", 32}
+							d := &Developer{Person{"John", 29}, "TFG"}
+							p.sayHello()
+							d.sayHello()
+						}
+						```
+
+						```bash
+						$ go run main.go
+						Hello
+						BeepBoop
+						```
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						## Procedures
+						Go allows both functions and methods with collections of functions passed around as interfaces.
+					</section>
+					<section data-markdown>
+						## Functions
+						Go supports first class functions that do not need to be attached or instantiated from a class/object
+						```go
+						func exampleFunction(varName string) []int, error {
+							...
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Methods
+						Go also allows you to attach methods to structs
+						```go
+						func (s *SomeStruct) exampleMethod(a int) int {
+							...
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Interfaces
+						Interfaces in Go provide a way to specify the behavior of an object: if something can do *this*, then it can be used here.
+
+						Interfaces are satisfied **implicitly**.
+
+						```go
+						type ExampleInterface interface {
+							methodOne(in string) string
+							methodTwo(in []int) int, error
+						}
+						type First struct { RandomInfo string}
+						type Second struct { OtherInfo int}
+
+						func (s *First) methodOne(a int) int {}
+						func (s *First) methodTwo(a int) int {}
+
+						func (s *Second) methodOne(a int) int {}
+						func (s *Second) methodTwo(a int) int {}
+
+						func satisfied (ex ExampleInterface) {
+							// Either first or second struct can be used!
+						}
+						```
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Hello World
+						We're going to start with a simple hello world program.
+					</section>
+					<section data-markdown>
+						## Hello World
+						The below code will get you going:
+						```go
+						package main
+
+						import "fmt"
+
+						func main() {
+							fmt.Println("Hello, 世界")
+						}
+						```
+
+						To run it:
+						```
+						$ go run main.go
+						Hello, 世界
+						```
+					</section>
+				</section>
+
+
+
+				<section>
+					<section data-markdown>
+						## Command Line Tools
+						Let's have a look at parsing command line flags. Go is quite good at building command line tools.
+					</section>
+					<section data-markdown>
+						## Command Line Tool Example
+						```go
+						func main() {
+						    var cmd string
+
+						    flag.StringVar(&cmd, "cmd", cmd, `cmd can be either "hello" or "bye"`)
+						    flag.Parse()
+
+						    switch cmd {
+						    case "hello":
+						        fmt.Println("Hello!")
+						    case "bye":
+						        fmt.Println("Bye!")
+						    default:
+						        flag.Usage()
+						    }
+						}
+						```
+					</section>
+					<section data-markdown>
+						Lets build it first then run it.
+
+						```bash
+						$ go build main.go
+						$ ./go-crashcourse
+						Usage of ./go-crashcourse:
+						  -cmd string
+						    	cmd can be either "hello" or "bye"
+						```
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Concurrency
+						Go has two main forms of managing concurrency. Goroutines and Channels.
+
+					</section>
+					<section data-markdown>
+						## Go Routines
+						Go routines are light weight threads that are managed by the Go runtime.
+						To run a function in a new go routine, just put "go" before the function call.
+					</section>
+					<section data-markdown>
+						## Go routine example
+						```
+						func main() {
+							go say("let's go!", 3*time.Second)
+							go say("ho!", 2*time.Second)
+							go say("hey!", 1*time.Second)
+
+							time.Sleep(4 * time.Second)
+							fmt.Println("Finished")
+						}
+						func say(text string, delay time.Duration) {
+							time.Sleep(delay)
+							fmt.Println(text)
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Channels
+						Channels are typed conduits for synchronization and communication between go routines.
+					</section>
+					<section data-markdown>
+						## Go channel example
+						```go
+						func main() {
+							messages := make(chan string)
+							go func() {messages <- "ping"}()
+							msg := <- messages
+							fmt.Println(msg)
+						}
+						```
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Web Client and Server
+						Go has a very solid standard library and its common in the community to focus on solving most problems with the standard library.
+					</section>
+					<section data-markdown>
+						## Client
+						The net/http package provides an HTTP client.
+						```
+						func main() {
+						    r, err := http.Get("http://www.golang.org/")
+						    if err != nil {
+						        log.Fatal(err)
+						    }
+						    if r.StatusCode != http.StatusOK {
+						        log.Fatal(r.Status)
+						    }
+						    io.Copy(os.Stdout, r.Body)
+						}
+						```
+					</section>
+
+					<section data-markdown>
+						## Server
+						The net/http package also provides an HTTP server.
+						```
+						func main() {
+						    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+						        fmt.Fprint(w, "Hello, web")
+						    })
+
+						    fmt.Println("Starting server")
+						    err := http.ListenAndServe("localhost:8080", nil)
+						    if err != nil {
+						        log.Fatal(err)
+						    }
+						}
+						```
+						This is a high-performance, DoS-hardened and production-ready web server.
+						It serves [dl.google.com](http://dl.google.com) currently uses it.
+					</section>
+					<section data-markdown>
+						## Server with Templated HTML
+						We will need our first dependency for this code.
+						```bash
+						go get github.com/gorilla/mux
+						```
+						The code below creates a webserver that handles only a single route, `/`, unlike before.
+						```go
+						import "github.com/gorilla/mux"
+
+						// PartTwo runs a web server with templating
+						func PartTwo() {
+							rt := mux.NewRouter().StrictSlash(true)
+							// Index is described in the slide below
+							rt.HandleFunc("/", Index)
+							log.Println("PART TWO: Starting server of localhost:8081")
+							log.Fatal(http.ListenAndServe(":8081", rt))
+						}
+						```
+					</section>
+
+					<section data-markdown>
+						## Route Handlers
+						```go
+						//Index is the handler for root path
+						func Index(w http.ResponseWriter, r *http.Request) {
+							pd := PageData{
+								Title: "Index Page",
+								Body:  "This is the body of the page",
+							}
+
+							tmpl, err := htmlTemplate(pd)
+
+							if err != nil {
+								w.WriteHeader(http.StatusBadRequest)
+								w.Write([]byte(err.Error()))
+								return
+							}
+							w.Write([]byte(tmpl))
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Templating
+
+						```go
+						func htmlTemplate(pd PageData) (string, error) {
+							html := `&ltHTML&gt
+						&lthead&gt
+							&lttitle&gt
+								{{.Title}}
+							&lt/title&gt
+						&lt/head&gt
+						&ltbody&gt
+							{{.Body}}
+						&lt/body&gt
+						`
+
+							tmpl, err := template.New("index").Parse(html)
+							if err != nil {
+								return "", err
+							}
+
+							var out bytes.Buffer
+
+							if err := tmpl.Execute(&out, pd); err != nil {
+								return "", err
+							}
+
+							return out.String(), nil
+						}
+						```
+					</section>
+					<section data-markdown>
+						Now we can update our CLI tool and execute our server.
+						```bash
+						$ go build
+						./go-crashcourse -cmd serve2
+						Running server!
+						2016/03/04 10:57:19 PART TWO: Starting server of localhost:8081
+						```
+						Next we visit [localhost:8081](http://localhost:8081)
+						```bash
+						open http://localhost:8081
+						```
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Testing
+						Go has a robust standard tooling for table based XUnit type tests. Additional third party libraries are available for more BDD style assertions.
+					</section>
+					<section data-markdown>
+						## Testing Example
+
+						First we will build the test suite.
+						```go
+						package add_test
+
+						import (
+							"testing"
+
+							"github.com/nii236/gotraining/testing"
+						)
+
+						var tests = []struct {
+							in  []int
+							out int
+						}{
+							{[]int{1, 2}, 3},
+							{[]int{-1, 2}, 1},
+							{[]int{1, 0}, 1},
+						}
+						```
+					</section>
+					<section data-markdown>
+						Next we will write the test itself:
+
+						```go
+						func TestFunc(t *testing.T) {
+							for _, tt := range tests {
+								got := add.Do(tt.in[0], tt.in[1])
+								expected := tt.out
+								if got != tt.out {
+									t.Errorf("Error! Got %d, expected %d", got, expected)
+								}
+
+							}
+						}
+
+						```
+
+					</section>
+					<section data-markdown>
+						## Testing Example Continued
+						Next we will write the code that satisfies the test:
+
+						```go
+						package add
+
+						//Do runs a test func given two integers
+						func Do(a int, b int) int {
+							return a + b
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Testing Example Continued
+						Now we can run the test and see how we go!
+						```bash
+						$ go test ./...
+						?   	github.com/nii236/gotraining/go-crashcourse	[no test files]
+						?   	github.com/nii236/gotraining/go-crashcourse/concurrency	[no test files]
+						?   	github.com/nii236/gotraining/go-crashcourse/hello	[no test files]
+						?   	github.com/nii236/gotraining/go-crashcourse/serve	[no test files]
+						?   	github.com/nii236/gotraining/go-crashcourse/structs	[no test files]
+						ok  	github.com/nii236/gotraining/go-crashcourse/testing	0.005s
+						```
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## The End.
+					</section>
+				</section>
+			</div>
+
+		</div>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
