@@ -7,7 +7,7 @@
 		<title>reveal.js - Barebones</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 	</head>
 
@@ -322,9 +322,12 @@
 					<section data-markdown>
 						Lets build it first then run it.
 
-						```
+						```bash
 						$ go build main.go
-						$ ./cli
+						$ ./go-crashcourse
+						Usage of ./go-crashcourse:
+						  -cmd string
+						    	cmd can be either "hello" or "bye"
 						```
 					</section>
 				</section>
@@ -427,43 +430,51 @@
 
 						First we will build the test suite.
 						```go
-						package main_test
+						package add_test
+
 						import (
 							"testing"
-							"github.com/src/github.com/nii236/goworkshop/test"
+
+							"github.com/nii236/gotraining/testing"
 						)
 
 						var tests = []struct {
-							in []int
+							in  []int
 							out int
 						}{
 							{[]int{1, 2}, 3},
-							{[]int{-1, 2}, 1}
-							{[]int{1, 0}, 1}
+							{[]int{-1, 2}, 1},
+							{[]int{1, 0}, 1},
 						}
+						```
+					</section>
+					<section data-markdown>
+						Next we will write the test itself:
 
+						```go
 						func TestFunc(t *testing.T) {
-							for _, tt := tests {
-								got := TestFunc(tt.in[0], tt.in[1])
+							for _, tt := range tests {
+								got := add.Do(tt.in[0], tt.in[1])
 								expected := tt.out
 								if got != tt.out {
-									t.Errorf("Error! Got %q, expected %q", got, tt.out)
+									t.Errorf("Error! Got %d, expected %d", got, expected)
 								}
 
 							}
 						}
+
 						```
+
 					</section>
 					<section data-markdown>
 						## Testing Example Continued
 						Next we will write the code that satisfies the test:
 
 						```go
-						package main
-						func main() {
-							TestFunc()
-						}
-						func TestFunc(a int, b int) int {
+						package add
+
+						//Do runs a test func given two integers
+						func Do(a int, b int) int {
 							return a + b
 						}
 						```
