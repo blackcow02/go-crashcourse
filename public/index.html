@@ -224,7 +224,8 @@
 						## Exported and Unexported Identifiers
 						If the first letter of a function is a capital, then it is considered an exported identifier and can be accessed from outside the package.
 						```go
-						// ExportedFunction is a function that is accessible outside of the package
+						// ExportedFunction is a function that is
+						// accessible outside of the package
 						func ExportedFunction() {}
 						```
 
@@ -564,7 +565,8 @@
 					<section data-markdown>
 						## Go routine example
 						```
-						func main() {
+						// Routines is an example of Go routines.
+						func Routines() {
 							go say("let's go!", 3*time.Second)
 							go say("ho!", 2*time.Second)
 							go say("hey!", 1*time.Second)
@@ -572,6 +574,7 @@
 							time.Sleep(4 * time.Second)
 							fmt.Println("Finished")
 						}
+
 						func say(text string, delay time.Duration) {
 							time.Sleep(delay)
 							fmt.Println(text)
@@ -585,10 +588,11 @@
 					<section data-markdown>
 						## Go channel example
 						```go
-						func main() {
+						// Channels is an example of Go channels.
+						func Channels() {
 							messages := make(chan string)
-							go func() {messages <- "ping"}()
-							msg := <- messages
+							go func() { messages <- "ping" }()
+							msg := <-messages
 							fmt.Println(msg)
 						}
 						```
