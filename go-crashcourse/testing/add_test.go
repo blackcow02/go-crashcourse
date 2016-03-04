@@ -3,7 +3,7 @@ package add_test
 import (
 	"testing"
 
-	"github.com/nii236/gotraining/testing"
+	"github.com/nii236/gotraining/go-crashcourse/testing"
 )
 
 var tests = []struct {

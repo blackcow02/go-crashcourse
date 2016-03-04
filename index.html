@@ -100,11 +100,11 @@
 				<section>
 					<section data-markdown>
 						## Tooling
-						Go comes with its own tool, called `go`. It manages many things, but dependency management is the main thing missing.
+						Go comes with its own tool, called `go`. It manages many things, and any missing functionality can be covered with third party tools.
 					</section>
 					<section data-markdown>
 						## Go tool
-						The `go` tool can handle fetching dependencies, running tests, installing binaries, running programs, linting, code formatting, and many other things!
+						The `go` tool can handle fetching dependencies, running tests, installing binaries, running programs, linting, code formatting, and many others!
 						```bash
 						build       compile packages and dependencies
 						clean       remove object files
@@ -138,10 +138,10 @@
 						The commands `go get`, `go build`, `go run`, and `go test` will probably be your most commonly used commands.
 
 						## Cross compilation
-						To cross compile to a different system architecture, prefix with the environment variable.
+						To cross compile to a different system architecture, prefix with the relevant environment variables.
 
 						Cross compiling for Windows from OSX:
-						```plain
+						```bash
 						GOOS=windows GOARCH=amd64 go build main.go
 						```
 					</section>
@@ -149,9 +149,9 @@
 						## Editors
 						- [Atom](https://atom.io/) + [go-plus](https://github.com/joefitzgerald/go-plus)
 						- [Sublime Text](https://www.sublimetext.com/) + [gosublime](https://github.com/DisposaBoy/GoSublime)
-						- IntelliJ IDEA Community + [go-lang-idea-plugin](https://github.com/go-lang-plugin-org/go-lang-idea-plugin)
-						- Vim + [vim-go](https://github.com/fatih/vim-go)
-						- VSCode + vscode-go
+						- [IntelliJ IDEA Community](https://www.jetbrains.com/idea/download/) + [go-lang-idea-plugin](https://github.com/go-lang-plugin-org/go-lang-idea-plugin)
+						- [Vim](http://www.vim.org/) + [vim-go](https://github.com/fatih/vim-go)
+						- [VSCode](https://code.visualstudio.com/) + [vscode-go](https://github.com/Microsoft/vscode-go)
 					</section>
 				</section>
 				<section>
@@ -348,6 +348,7 @@
 					</section>
 					<section data-markdown>
 						## Embedding Structs
+						Go does not provide the typical, type-driven notion of subclassing, but it does have the ability to “borrow” pieces of an implementation by embedding types within a struct or interface.
 						```go
 						type Person struct {
 							Name string
@@ -416,17 +417,21 @@
 					</section>
 					<section data-markdown>
 						## Interfaces
-						Collections of methods are called interfaces, and these are satisfied **implicitly**. So if you attach the right methods to a struct to satisfy an interface you may use that struct as an argument wherever that interface is used!
+						Interfaces in Go provide a way to specify the behavior of an object: if something can do *this*, then it can be used here.
+
+						Interfaces are satisfied **implicitly**.
+
 						```go
 						type ExampleInterface interface {
 							methodOne(in string) string
 							methodTwo(in []int) int, error
 						}
-
 						type First struct { RandomInfo string}
 						type Second struct { OtherInfo int}
+
 						func (s *First) methodOne(a int) int {}
 						func (s *First) methodTwo(a int) int {}
+
 						func (s *Second) methodOne(a int) int {}
 						func (s *Second) methodTwo(a int) int {}
 
@@ -586,8 +591,94 @@
 						    }
 						}
 						```
-						This is a high-performance, DoS-hardened, production-ready web server.
-						It serves dl.google.com
+						This is a high-performance, DoS-hardened and production-ready web server.
+						It serves [dl.google.com](http://dl.google.com) currently uses it.
+					</section>
+					<section data-markdown>
+						## Server with Templated HTML
+						We will need our first dependency for this code.
+						```bash
+						go get github.com/gorilla/mux
+						```
+						The code below creates a webserver that handles only a single route, `/`, unlike before.
+						```go
+						import "github.com/gorilla/mux"
+
+						// PartTwo runs a web server with templating
+						func PartTwo() {
+							rt := mux.NewRouter().StrictSlash(true)
+							// Index is described in the slide below
+							rt.HandleFunc("/", Index)
+							log.Println("PART TWO: Starting server of localhost:8081")
+							log.Fatal(http.ListenAndServe(":8081", rt))
+						}
+						```
+					</section>
+
+					<section data-markdown>
+						## Route Handlers
+						```go
+						//Index is the handler for root path
+						func Index(w http.ResponseWriter, r *http.Request) {
+							pd := PageData{
+								Title: "Index Page",
+								Body:  "This is the body of the page",
+							}
+
+							tmpl, err := htmlTemplate(pd)
+
+							if err != nil {
+								w.WriteHeader(http.StatusBadRequest)
+								w.Write([]byte(err.Error()))
+								return
+							}
+							w.Write([]byte(tmpl))
+						}
+						```
+					</section>
+					<section data-markdown>
+						## Templating
+
+						```go
+						func htmlTemplate(pd PageData) (string, error) {
+							html := `&ltHTML&gt
+						&lthead&gt
+							&lttitle&gt
+								{{.Title}}
+							&lt/title&gt
+						&lt/head&gt
+						&ltbody&gt
+							{{.Body}}
+						&lt/body&gt
+						`
+
+							tmpl, err := template.New("index").Parse(html)
+							if err != nil {
+								return "", err
+							}
+
+							var out bytes.Buffer
+
+							if err := tmpl.Execute(&out, pd); err != nil {
+								return "", err
+							}
+
+							return out.String(), nil
+						}
+						```
+					</section>
+					<section data-markdown>
+						Now we can update our CLI tool and execute our server.
+						```bash
+						$ go build
+						./go-crashcourse -cmd serve2
+						Running server!
+						2016/03/04 10:57:19 PART TWO: Starting server of localhost:8081
+						```
+						Next we visit [localhost:8081](http://localhost:8081)
+						```bash
+						open http://localhost:8081
+						```
 					</section>
 				</section>
 
@@ -654,7 +745,13 @@
 						## Testing Example Continued
 						Now we can run the test and see how we go!
 						```bash
-						$ go test
+						$ go test ./...
+						?   	github.com/nii236/gotraining/go-crashcourse	[no test files]
+						?   	github.com/nii236/gotraining/go-crashcourse/concurrency	[no test files]
+						?   	github.com/nii236/gotraining/go-crashcourse/hello	[no test files]
+						?   	github.com/nii236/gotraining/go-crashcourse/serve	[no test files]
+						?   	github.com/nii236/gotraining/go-crashcourse/structs	[no test files]
+						ok  	github.com/nii236/gotraining/go-crashcourse/testing	0.005s
 						```
 					</section>
 				</section>

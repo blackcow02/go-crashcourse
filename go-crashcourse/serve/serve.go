@@ -27,7 +27,7 @@ func PartOne() {
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
 
-// PartOne runs a web server with templating
+// PartTwo runs a web server with templating
 func PartTwo() {
 	rt := mux.NewRouter().StrictSlash(true)
 	rt.HandleFunc("/", Index)
