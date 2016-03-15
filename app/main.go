@@ -11,10 +11,6 @@ import (
 	"github.com/nii236/go-crashcourse/app/structs"
 )
 
-//OldGuy is a struct showing how you can pass external interfaces in to a func
-type OldGuy struct {
-}
-
 func main() {
 	var cmd string
 
@@ -41,6 +37,9 @@ func main() {
 	case "wwg":
 		fmt.Println("Running concurrency example without WaitGroups!")
 		concurrency.WithoutWG(concurrency.Data)
+	case "sort":
+		fmt.Println("Running sort interface example!")
+		structs.SortHumans()
 	case "structs":
 		fmt.Println("Running structs example!")
 		structs.StructExample()
@@ -52,6 +51,10 @@ func main() {
 
 		flag.Usage()
 	}
+}
+
+//OldGuy is a struct showing how you can pass external interfaces in to a func
+type OldGuy struct {
 }
 
 //SayHello is an external method to OldGuy
